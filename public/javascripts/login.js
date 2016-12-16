@@ -6,7 +6,7 @@ $(document).ready(function () {
         var name = $('#name').val();
         var password = $('#pwd').val();
         $.ajax({
-            url: "http://localhost:3000/users/verify",
+            url: "../users/verify",
             type: "get",
             dataType: "json",
             data:
@@ -15,7 +15,7 @@ $(document).ready(function () {
                     password: password
                 },
             success: function (result) {
-                alert(result.id);
+                self.location='/users/main';
             },
             error:function(data){
                 alert('error');

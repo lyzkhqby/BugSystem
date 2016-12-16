@@ -55,6 +55,7 @@ var user = {
                 // 以json形式，把操作结果返回给前台页面
                 result = {id : rows[0].id};
                 jsonWrite(res, result);
+
                 connection.release();
 
             });
