@@ -19,7 +19,7 @@ router.get('/verify', function (req, res, next) {
 
 //用户界面
 router.get('/main', function (req, res, next) {
-
+    res.sendfile('./views/main.html');
 });
 
 module.exports = router;

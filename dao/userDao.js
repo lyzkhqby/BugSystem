@@ -52,14 +52,17 @@ var user = {
                 if (err){
                     /* handle error  */
                 }
-                // 以json形式，把操作结果返回给前台页面
-                result = {id : rows[0].id};
-                jsonWrite(res, result);
+
+                res.location('../routes/users/main');
+                // // 以json形式，把操作结果返回给前台页面
+                // result = {id : rows[0].id};
+                // jsonWrite(res, result);
 
                 connection.release();
 
             });
         });
+
     }
 }
 
