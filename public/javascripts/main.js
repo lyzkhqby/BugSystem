@@ -8,7 +8,6 @@ $(document).ready(function () {
 function addProject() {
 
     $('#addProject').click(function (event) {
-        alert('addproject');
-        self.location('/project/add');
+
     });
 }
