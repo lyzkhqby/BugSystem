@@ -15,7 +15,7 @@ $(document).ready(function () {
                     password: password
                 },
             success: function (result) {
-
+                self.location = '/users/main';
             },
             error:function(data){
                 alert('error');

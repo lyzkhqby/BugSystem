@@ -8,6 +8,6 @@ $(document).ready(function () {
 function addProject() {
 
     $('#addProject').click(function (event) {
-
+        self.location = '/projects/addProject'
     });
 }

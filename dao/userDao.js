@@ -5,21 +5,9 @@
 
 var pool = require('../conf/db');
 var sql = require('./userSqlMapping');
+var jsonWrite = require('../util/jsonUtil');
 
-
-// 向前台返回JSON方法的简单封装
-var jsonWrite = function (res, ret) {
-    if(typeof ret === 'undefined') {
-        res.json({
-            code:'1',
-            msg: '操作失败'
-        });
-    } else {
-        res.json(ret);
-    }
-};
-
-var user = {
+var userDao = {
     add: function (req, res, next) {
         // 获取前台页面传过来的参数
         var param = req.query || req.params;
@@ -53,10 +41,9 @@ var user = {
                     /* handle error  */
                 }
 
-                res.location('../routes/users/main');
-                // // 以json形式，把操作结果返回给前台页面
-                // result = {id : rows[0].id};
-                // jsonWrite(res, result);
+                // 以json形式，把操作结果返回给前台页面
+                result = {id : rows[0].id};
+                jsonWrite(res, result);
 
                 connection.release();
 
@@ -66,4 +53,4 @@ var user = {
     }
 }
 
-module.exports = user;
+module.exports = userDao;
