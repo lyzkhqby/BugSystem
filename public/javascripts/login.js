@@ -15,8 +15,10 @@ $(document).ready(function () {
                     password: password
                 },
             success: function (result) {
-                if (result.info && result.info == 'ok') {
+                if (result.info == 'ok') {
                     self.location = '/users/main';
+                }else {
+                    alert(result.info);
                 }
             },
             error:function(data){

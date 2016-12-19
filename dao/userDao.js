@@ -40,9 +40,15 @@ var userDao = {
                 if (err){
                     /* handle error  */
                 }
-                req.session.userId = rows[0].id;
-                //以json形式，把操作结果返回给前台页面
-                result = {info : 'ok'};
+                var result;
+                if (rows == undefined || rows.length == 0) {
+                    result = {info : '用户名或密码错误'};
+                }else {
+                    req.session.userId = rows[0].id;
+                    //以json形式，把操作结果返回给前台页面
+                    result = {info : 'ok'};
+                }
+
                 jsonWrite(res, result);
 
                 connection.release();

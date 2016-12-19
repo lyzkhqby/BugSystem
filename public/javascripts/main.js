@@ -27,7 +27,12 @@ function showUserProject() {
                 $('#userProject').empty();
                 result.forEach(function (item, index) {
                     $('#userProject').append('<input type="button" value="'+ item.projectName +'">');
-                })
+                });
+                // $.each($('#userProject input'), function (index, item) {
+                //     item.click(function (event) {
+                //         alert(result[index].projectName);
+                //     })
+                // })
             }
         },
         error:function(data){
