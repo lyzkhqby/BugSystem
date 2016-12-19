@@ -3,6 +3,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
@@ -22,6 +23,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// 按照上面的解释，设置 session 的可选参数
+app.use(session({
+    secret: 'recommand 128 bytes random string', // 建议使用 128 个字符的随机字符串
+    cookie: { maxAge:  7 *24 * 60 * 60 * 1000 },
+    resave: false,
+    saveUninitialized: true
+}));
 
 app.use('/', index);
 app.use('/users', users);

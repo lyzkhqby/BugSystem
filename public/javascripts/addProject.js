@@ -1,27 +1,30 @@
 /**
- * Created by rotoosoft-d04 on 2016/12/16.
+ * Created by rotoosoft-d04 on 2016/12/19.
  */
 $(document).ready(function () {
-    $('#login').click(function (event) {
+    add();
+})
+
+function add() {
+
+    $('#add').click(function (event) {
         var name = $('#name').val();
-        var password = $('#pwd').val();
+        var des = $('#des').val();
         $.ajax({
-            url: "/users/verify",
+            url: "../projects/addProject/add",
             type: "get",
             dataType: "json",
             data:
                 {
-                    name: name,
-                    password: password
+                    proName: name,
+                    des: des
                 },
             success: function (result) {
-                if (result.info && result.info == 'ok') {
-                    self.location = '/users/main';
-                }
+                alert(result.msg);
             },
             error:function(data){
                 alert('error');
             }
         });
     });
-})
+}

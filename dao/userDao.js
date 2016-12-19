@@ -3,7 +3,7 @@
  */
 // 实现与MySQL交互
 
-var pool = require('../conf/db');
+var pool = require('../conf/pool');
 var sql = require('./userSqlMapping');
 var jsonWrite = require('../util/jsonUtil');
 
@@ -40,9 +40,9 @@ var userDao = {
                 if (err){
                     /* handle error  */
                 }
-
-                // 以json形式，把操作结果返回给前台页面
-                result = {id : rows[0].id};
+                req.session.userId = rows[0].id;
+                //以json形式，把操作结果返回给前台页面
+                result = {info : 'ok'};
                 jsonWrite(res, result);
 
                 connection.release();

@@ -1,10 +1,10 @@
 /**
- * Created by rotoosoft-d04 on 2016/12/19.
+ * Created by rotoosoft-d04 on 2016/12/16.
  */
 // MySQL数据库联接配置
 var mysql = require('mysql');
 
-var connection = mysql.createConnection({
+var pool = mysql.createPool({
     host     : 'localhost',
     user     : 'zk',
     password : 'lYrs2014',
@@ -12,4 +12,4 @@ var connection = mysql.createConnection({
     port: 3306
 });
 
-module.exports = connection;
+module.exports = pool;
