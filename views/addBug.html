@@ -3,22 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>添加Bug处理信息</title>
+    <script src="../javascripts/jquery-3.1.1.min.js"></script>
+    <script src="../javascripts/addBug.js"></script>
 </head>
 <body>
     <label>平台</label>
-    <input type="text" id="platform">
+    <select id="platform">
+        <option value="web">web</option>
+        <option value="android">android</option>
+        <option value="ios">ios</option>
+    </select>
     <label>来源</label>
     <input type="text" id="from">
-    <label>修改人员</label>
-    <input type="text" id="modifyer">
-    <label>预计完成时间</label>
-    <input type="text" id="plantime">
-    <label>实际完成时间</label>
-    <input type="text" id="finishtime">
-    <label>完成情况说明</label>
-    <input type="text" id="finishstatus">
     <label>变更内容</label>
     <input type="text" id="content">
+    <label>修改人员</label>
+    <div id="modifyer"></div>
+    <label>预计完成时间</label>
+    <input type="text" id="plan_time">
+    <label>实际完成时间</label>
+    <input type="text" id="finish_time">
+    <label>完成情况</label>
+    <select id="finish_status">
+        <option value="1">已完成</option>
+        <option value="0">未完成</option>
+    </select>
+    <div id="unfinish_content_div" style="display: none">
+        <label>未完成情况说明</label>
+        <input type="text" id="unfinish_content">
+    </div>
+    <input type="button" id="add">
 
 </body>
 </html>
