@@ -62,6 +62,7 @@ var projectDao = {
                     var project = {};
                     project['projectName'] = item.proName;
                     project['des'] = item.des;
+                    project['projectId'] = item.id;
                     projects.push(project);
 
                 });
@@ -71,7 +72,15 @@ var projectDao = {
 
             });
         });
+    },
+    storeProjectIdSession: function (req, res, next) {
+        var param = req.query || req.params;
+        var projectId = param.projectId;
+        req.session.projectId = projectId;
+        var result = {info : 'ok'};
+        jsonWrite(res, result);
     }
+
 }
 
 module.exports = projectDao;

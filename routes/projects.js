@@ -17,4 +17,8 @@ router.get('/showUserProject', function (req, res, next) {
     projectDao.showUserProject(req, res, next);
 });
 
+router.get('/storeProjectId', function (req, res, next) {
+    projectDao.storeProjectIdSession(req, res, next);
+});
+
 module.exports = router;

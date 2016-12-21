@@ -23,16 +23,35 @@ function showUserProject() {
 
             },
         success: function (result) {
+            $('#userProject').empty();
             if (result != null) {
                 $('#userProject').empty();
                 result.forEach(function (item, index) {
                     $('#userProject').append('<input type="button" value="'+ item.projectName +'">');
                 });
-                // $.each($('#userProject input'), function (index, item) {
-                //     item.click(function (event) {
-                //         alert(result[index].projectName);
-                //     })
-                // })
+                $('#userProject input').click(function () {
+                    var i = $('#userProject input').index(this);
+                    var projectId = result[i].projectId;
+                    storeProjectIdSession(projectId);
+                });
+            }
+        },
+        error:function(data){
+            alert('error');
+        }
+    });
+}
+
+function storeProjectIdSession(projectId) {
+    $.ajax({
+        url:"/projects/storeProjectId",
+        dataType: "json",
+        data: {
+            projectId: projectId
+        },
+        success: function (result) {
+            if (result.info == 'ok') {
+                self.location='/bugs'
             }
         },
         error:function(data){
