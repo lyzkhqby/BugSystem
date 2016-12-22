@@ -3,10 +3,71 @@
  */
 $(document).ready(function () {
     addBug();
+    showBugs();
 })
 
 function addBug() {
     $('#add').click(function () {
         self.location='/bugs/add';
     });
+}
+
+function showBugs() {
+    $.ajax({
+        url: "/bugs/show",
+        type: "get",
+        dataType: "json",
+        data: {},
+        success: function (result) {
+            showTableTitle();
+            if (result != undefined && result.length > 0) {
+                result.forEach(function (item, index) {
+                    if (item.finishStatus == 1) {
+                        $('#bugs').append('<tr><td>'+ item.recordDate+'</td>' +
+                            '<td>'+ item.platform +'</td>' +
+                            '<td>'+ item.source +'</td>' +
+                            '<td>'+ item.content +'</td>' +
+                            '<td >'+ item.recorder +'</td>' +
+                            '<td>'+ item.modifiers +'</td>' +
+                            '<td>'+ item.planDate +'</td>' +
+                            '<td>'+ item.finishDate +'</td>' +
+                            '<td>已完成</td>' +
+                            '<td>'+ item.finishContent+'</td></tr>>'
+                        );
+                    }else if (item.finishStatus == 0) {
+                        $('#bugs').append('<tr><td>'+ item.recordDate+'</td>' +
+                            '<td>'+ item.platform +'</td>' +
+                            '<td>'+ item.source +'</td>' +
+                            '<td>'+ item.content +'</td>' +
+                            '<td>'+ item.recorder +'</td>' +
+                            '<td>'+ item.modifiers +'</td>' +
+                            '<td>'+ item.planDate +'</td>' +
+                            '<td>'+ item.finishDate +'</td>' +
+                            '<td>'+ item.finishContent +'</td>' +
+                            '</tr>'
+                        );
+                    }
+
+
+
+
+                });
+
+            }
+
+        }
+    });
+}
+
+function showTableTitle() {
+    $('#bugs').empty();
+    $('#bugs').append('<tr><td>日期</td>' +
+        '<td>平台</td>' +
+        '<td>来源</td>' +
+        '<td>变更内容</td>' +
+        '<td>记录人</td>' +
+        '<td>修改人员</td>' +
+        '<td>预计完成时间</td>' +
+        '<td>实际完成时间</td>' +
+        '<td>完成情况说明</td></tr>' );
 }

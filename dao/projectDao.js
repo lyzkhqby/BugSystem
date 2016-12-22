@@ -13,18 +13,14 @@ var projectDao = {
 
         var userId = req.session.userId;
         var date = new Date().toLocaleString();
-
+        var resultStr = {code : '0', msg: '添加失败'};
         connection.beginTransaction(function (err) {
             if (err) {};
             connection.query(sql.insert, [param.proName, date, userId, param.des], function (err, result) {
                 if (err) {
-                    return connection.rollback(function() {
-                        throw err;
-                    });
                 }
                 connection.query(sql.queryNewProId, [userId], function (err, result) {
                     if (err){
-                        resultStr = {code : '0', msg: '添加失败'};
                     }
                     var projectId = result[0].id;
                     connection.query(sql.insertUP,[userId, projectId], function (err, result) {

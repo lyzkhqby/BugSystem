@@ -25,7 +25,6 @@ function showUserProject() {
         success: function (result) {
             $('#userProject').empty();
             if (result != null) {
-                $('#userProject').empty();
                 result.forEach(function (item, index) {
                     $('#userProject').append('<input type="button" value="'+ item.projectName +'">');
                 });
