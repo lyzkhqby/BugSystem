@@ -112,7 +112,7 @@ var bugDao = {
                 //以json形式，把操作结果返回给前台页面
                 var bugs = [];
                 var resLen = result.length;
-                if (resLen == 0) return;
+                if (resLen == 0) jsonWrite(res, bugs);
                 result.forEach(function (item, index) {
                     var bug = {};
                     bug['recordDate'] = stringUtil.tranDate(item.recordDate);
