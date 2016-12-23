@@ -6,7 +6,8 @@ var project = {
     queryByUserId: 'select * from project where id in (select projectId from user_project where userId=?);',
     queryAll: 'select * from project',
     queryNewProId: 'SELECT id FROM project WHERE createUserId=? ORDER BY id DESC',
-    insertUP:'INSERT INTO user_project(id, userId, projectId) VALUES(0, ?, ?)'
+    insertUP:'INSERT INTO user_project(id, userId, projectId) VALUES(0, ?, ?)',
+    queryJoinProject: 'select * from project where id not in (select distinct projectId from user_project where userId=?)'
 };
 
 module.exports = project;

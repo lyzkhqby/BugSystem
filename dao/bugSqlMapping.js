@@ -11,7 +11,7 @@ var bug = {
     queryNewBugId: 'SELECT id FROM bug WHERE recordUserId=? ORDER BY id DESC',
     insertUerBug:'INSERT INTO user_bug(id, userId, bugId) VALUES',
     getModifiers:'select * from user where id in (select userId from user_project where projectId=?)',
-    queryBugs: 'select a.*, b.name from bug a inner join user b on a.recordUserId=b.id where projectId=?',
+    queryBugs: 'select a.*, b.name, b.id as userId from bug a inner join user b on a.recordUserId=b.id where projectId=? order by recordDate desc',
     queryUsersByBugId: 'select b.name from user_bug a inner join user b on a.userId=b.id where bugId=?'
 };
 

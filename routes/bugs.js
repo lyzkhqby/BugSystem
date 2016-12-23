@@ -25,4 +25,8 @@ router.get('/add/addBug', function (req, res, next) {
     bugDao.addBug(req, res, next);
 });
 
+router.get('/delete', function (req, res, next) {
+    bugDao.deleteBug(req, res, next);
+});
+
 module.exports = router;

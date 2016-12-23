@@ -48,13 +48,51 @@ function showBugs() {
                         );
                     }
 
-
-
-
                 });
+                var trs = $('#bugs tr');
+                result.forEach(function (item, index) {
+                    if (item.canMD == 1) {
+                        var tr = trs.eq(index + 1);
+                        tr.append('<td><input type="button" value="修改"><input type="button" value="删除"></td>');
+                        var inputs = tr.find('input');
+                        //修改
+                        inputs.eq(0).click(function (event) {
+                            alert('修改' + (index + 1));
+                        });
+                        //删除
+                        inputs.eq(1).click(function (event) {
 
+                        })
+
+                    }
+
+
+                })
             }
 
+        }
+    });
+}
+
+function deleteBug(bugId) {
+    $.ajax({
+        url: "/bugs/delete",
+        type: "get",
+        dataType: "json",
+        data:
+            {
+                bugId: bugId,
+            },
+        success: function (result) {
+            if (result.info == 'ok') {
+                alert("删除成功");
+                self.location='/bugs';
+            }else {
+                alert(result.info);
+            }
+        },
+        error:function(data){
+            alert('error');
         }
     });
 }

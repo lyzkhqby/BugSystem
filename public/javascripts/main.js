@@ -3,6 +3,7 @@
  */
 $(document).ready(function () {
     addProject();
+    joinProject();
     showUserProject();
 })
 
@@ -10,6 +11,13 @@ function addProject() {
 
     $('#addProject').click(function (event) {
         self.location = '/projects/addProject'
+    });
+}
+
+//加入项目
+function joinProject() {
+    $('#joinProject').click(function (event) {
+        self.location = '/projects/joinProject'
     });
 }
 
@@ -50,7 +58,7 @@ function storeProjectIdSession(projectId) {
         },
         success: function (result) {
             if (result.info == 'ok') {
-                self.location='/bugs'
+                self.location='/bugs';
             }
         },
         error:function(data){

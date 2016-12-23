@@ -80,11 +80,7 @@ function addBug() {
                 finish_content: finish_content
             },
         success: function (result) {
-            if (result.code == '0') {
-                alert(result.msg, function () {
-                    self.location='/bugs';
-                });
-            }
+            alert(result.msg);
         },
         error:function(data){
             alert('error');

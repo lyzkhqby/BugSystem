@@ -50,7 +50,7 @@ var bugDao = {
         var projectId = req.session.projectId;
         var finishContent = param.finish_content;
 
-        var resultStr = {code : '0', msg: '添加失败'};
+
 
         connection.beginTransaction(function (err) {
             if (err) {
@@ -84,8 +84,14 @@ var bugDao = {
                         }
 
                         connection.commit(function (err) {
-                            if (err) {}
-                            resultStr = {code : '0', msg: '添加成功'};
+                            var resultStr;
+                            if (err) {
+                                resultStr = {code : '0', msg: '添加失败'};
+                            }else {
+                                resultStr = {code : '1', msg: '添加成功'};
+                            }
+
+
                             // 以json形式，把操作结果返回给前台页面
                             jsonWrite(res, resultStr);
                         });
@@ -97,7 +103,7 @@ var bugDao = {
     },
     showBugs: function (req, res, next) {
         var projectId = req.session.projectId;
-
+        var uid = req.session.userId;
 
         connection.beginTransaction(function (err) {
             if (err) {
@@ -112,6 +118,7 @@ var bugDao = {
                 //以json形式，把操作结果返回给前台页面
                 var bugs = [];
                 var resLen = result.length;
+
                 if (resLen == 0) jsonWrite(res, bugs);
                 result.forEach(function (item, index) {
                     var bug = {};
@@ -125,6 +132,7 @@ var bugDao = {
                     bug['finishContent'] = item.finishContent;
                     bug['recorder'] = item.name;
                     bug['bugId'] = item.id;
+                    bug['canMD'] = (item.userId == uid ? 1 : 0);
                     queryModifiers(bug, bugs, resLen);
                 });
 
@@ -199,6 +207,40 @@ var bugDao = {
         //
         //     });
         // });
+    },
+    deleteBug: function (req, res, next) {
+        var param = req.query || req.params;
+        var bugId = param.bugId;
+        connection.beginTransaction(function (err) {
+            if (err) {
+
+            }
+
+            connection.query(sql.deleteBug, [bugId], function (err, result) {
+                if (err) {
+                    return connection.rollback(function() {
+                        throw err;
+                    });
+                }
+                connection.query(sql.deleteUB, [bugId], function (err, result) {
+                    if (err) {
+                        return connection.rollback(function() {
+                            throw err;
+                        });
+                    }
+                    connection.commit(function (err) {
+                        var resultStr;
+                        if (err) {
+                            resultStr = {msg: '添加失败'};
+                        }else {
+                            resultStr = {msg: '添加成功'};
+                        }
+                        // 以json形式，把操作结果返回给前台页面
+                        jsonWrite(res, resultStr);
+                    });
+                });
+            })
+        });
     }
 }
 

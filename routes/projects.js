@@ -21,4 +21,15 @@ router.get('/storeProjectId', function (req, res, next) {
     projectDao.storeProjectIdSession(req, res, next);
 });
 
+router.get('/joinProject', function (req, res, next) {
+    res.sendfile('./views/joinProject.html');
+});
+router.get('/joinProject/show', function (req, res, next) {
+    projectDao.showJoinProjects(req,res, next);
+});
+
+router.get('/joinProject/join', function (req, res, next) {
+    projectDao.join(req,res, next);
+});
+
 module.exports = router;

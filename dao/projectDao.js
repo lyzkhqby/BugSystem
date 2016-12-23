@@ -13,26 +13,37 @@ var projectDao = {
 
         var userId = req.session.userId;
         var date = new Date().toLocaleString();
-        var resultStr = {code : '0', msg: '添加失败'};
+
         connection.beginTransaction(function (err) {
             if (err) {};
             connection.query(sql.insert, [param.proName, date, userId, param.des], function (err, result) {
                 if (err) {
+                    return connection.rollback(function() {
+                        throw err;
+                    });
                 }
                 connection.query(sql.queryNewProId, [userId], function (err, result) {
                     if (err){
+                        return connection.rollback(function() {
+                            throw err;
+                        });
                     }
                     var projectId = result[0].id;
                     connection.query(sql.insertUP,[userId, projectId], function (err, result) {
                         if (err) {
-
+                            return connection.rollback(function() {
+                                throw err;
+                            });
                         }
 
                         connection.commit(function (err) {
+                            var resultStr;
                             if(err) {
-
+                                resultStr = {code : '0', msg: '添加失败'};
+                            }else {
+                                resultStr = {code : '0', msg: '添加成功'};
                             }
-                            resultStr = {code : '0', msg: '添加成功'};
+
                             // 以json形式，把操作结果返回给前台页面
                             jsonWrite(res, resultStr);
                         });
@@ -75,6 +86,56 @@ var projectDao = {
         req.session.projectId = projectId;
         var result = {info : 'ok'};
         jsonWrite(res, result);
+    },
+    showJoinProjects: function (req, res, next) {
+        var userId = req.session.userId;
+        pool.getConnection(function(err, connection) {
+            if (err){
+                /* handle error  */
+            }
+
+            connection.query(sql.queryJoinProject, [userId], function(err, rows, fields) {
+                if (err){
+                    /* handle error  */
+                }
+                var projects = [];
+
+                rows.forEach(function (item, index) {
+                    var project = {};
+                    project['projectName'] = item.proName;
+                    project['des'] = item.des;
+                    project['projectId'] = item.id;
+                    projects.push(project);
+
+                });
+                jsonWrite(res, projects);
+                connection.release();
+
+            });
+        });
+    },
+    join: function (req, res, next) {
+        var param = req.query || req.params;
+        var projectId = param.projectId;
+        var userId = req.session.userId;
+
+        pool.getConnection(function (err, connection) {
+            if (err) {
+
+            }
+            connection.query(sql.insertUP, [userId, projectId], function (err, rows, fields) {
+                var resultStr;
+                if(err) {
+                    resultStr = {info: "failed"};
+                }else {
+                    resultStr = {info: "ok"};
+                }
+
+                jsonWrite(res, resultStr);
+                connection.release();
+            });
+        });
+
     }
 
 }
