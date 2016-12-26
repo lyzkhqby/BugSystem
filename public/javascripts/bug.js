@@ -61,7 +61,8 @@ function showBugs() {
                         });
                         //删除
                         inputs.eq(1).click(function (event) {
-
+                            var bugId = item.bugId;
+                            deleteBug(bugId);
                         })
 
                     }
@@ -84,12 +85,8 @@ function deleteBug(bugId) {
                 bugId: bugId,
             },
         success: function (result) {
-            if (result.info == 'ok') {
-                alert("删除成功");
-                self.location='/bugs';
-            }else {
-                alert(result.info);
-            }
+            alert(result.msg);
+            self.location='/bugs';
         },
         error:function(data){
             alert('error');

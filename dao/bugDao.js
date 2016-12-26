@@ -231,9 +231,9 @@ var bugDao = {
                     connection.commit(function (err) {
                         var resultStr;
                         if (err) {
-                            resultStr = {msg: '添加失败'};
+                            resultStr = {msg: '删除失败'};
                         }else {
-                            resultStr = {msg: '添加成功'};
+                            resultStr = {msg: '删除成功'};
                         }
                         // 以json形式，把操作结果返回给前台页面
                         jsonWrite(res, resultStr);
