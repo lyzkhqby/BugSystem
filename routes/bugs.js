@@ -29,4 +29,17 @@ router.get('/delete', function (req, res, next) {
     bugDao.deleteBug(req, res, next);
 });
 
+router.get('/modify', function (req, res, next) {
+    res.sendfile('./views/modifyBug.html');
+});
+
+router.get('/modify/init', function (req, res, next) {
+    bugDao.modifyInit(req, res, next);
+});
+
+router.get('/modify/modifyBug', function (req, res, next) {
+    bugDao.modifyBug(req, res, next);
+});
+
+
 module.exports = router;

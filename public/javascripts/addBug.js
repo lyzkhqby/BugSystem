@@ -38,7 +38,7 @@ function getModifiers() {
             if (result != undefined && result.length > 0) {
                 result.forEach(function (item, index) {
                     //alert(item);
-                    $('#modifyer').append('<label><input type="checkbox" value="'+ item.userId +'">'+ item.name +'</label>')
+                    $('#modifyer').append('<label><input type="checkbox" value="'+ item.userId +'">'+ item.name +'</label>');
                 })
             }
             $('#add').click(function () {

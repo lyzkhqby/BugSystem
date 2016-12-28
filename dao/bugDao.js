@@ -6,6 +6,7 @@ var sql = require('./bugSqlMapping');
 var jsonWrite = require('../util/jsonUtil');
 var stringUtil = require('../util/stringUtil');
 var connection = require('../conf/db');
+var sqlProject = require('./projectSqlMapping');
 
 var bugDao = {
     getModifiers: function (req, res, next) {
@@ -231,6 +232,7 @@ var bugDao = {
                     connection.commit(function (err) {
                         var resultStr;
                         if (err) {
+
                             resultStr = {msg: '删除失败'};
                         }else {
                             resultStr = {msg: '删除成功'};
@@ -240,6 +242,134 @@ var bugDao = {
                     });
                 });
             })
+        });
+    },
+    modifyInit: function (req, res, next) {
+        var param = req.query || req.params;
+        var bugId = param.bugId;
+        var projectId = req.session.projectId;
+
+        connection.beginTransaction(function (err) {
+            if (err) {
+
+            }
+
+            connection.query(sql.queryByBugId, [bugId], function (err, result) {
+                if (err) {
+                    return connection.rollback(function() {
+                        throw err;
+                    });
+                }
+
+                var bug = {};
+                var item = result[0];
+
+                bug['platform'] = item.platform;
+                bug['source'] = item.source;
+                bug['content'] = item.content;
+                bug['planDate'] = stringUtil.tranDate(item.planDate);
+                bug['finishDate'] = stringUtil.tranDate(item.finishDate);
+                bug['finishStatus'] = item.finishStatus;
+                bug['finishContent'] = item.finishContent;
+                bug['recorder'] = item.name;
+                bug['bugId'] = item.id;
+                connection.query(sql.queryUsersByBugId, [bugId], function (err, result) {
+                    if (err) {
+                        return connection.rollback(function() {
+                            throw err;
+                        });
+                    }
+                    var modifiers = [];
+                    result.forEach(function (item, index) {
+                        var modifier = {};
+                        modifier['modifierId'] = item.id;
+                        modifier['modifierName'] = item.name;
+                        modifiers.push(modifier);
+                    })
+                    bug['modifiers'] = modifiers;
+                    connection.query(sqlProject.queryUsersByProjectId, [projectId], function (err, result) {
+                        if (err) {
+                            return connection.rollback(function() {
+                                throw err;
+                            });
+                        }
+                        connection.commit(function (err) {
+                            if (err) {}
+                            var players = [];
+                            result.forEach(function (item, index) {
+                                var player= {};
+                                player['playerId'] = item.userId;
+                                player['playerName'] = item.name;
+                                players.push(player);
+                            })
+                            bug['players'] = players;
+                            jsonWrite(res, bug);
+
+                        });
+                    })
+                });
+            })
+        });
+    },
+    modifyBug: function (req, res, next) {
+        // 获取前台页面传过来的参数
+        var param = req.query || req.params;
+
+        var bugId = param.bugId;
+        var platform = param.platform;
+        var content = param.content;
+        var source = param.source;
+        var planDate = param.plan_time;
+        var finishDate = param.finish_time;
+        var finishStatus = param.finish_status;
+        var finishContent = param.finish_content;
+
+        connection.beginTransaction(function (err) {
+            if (err) {
+
+            }
+            connection.query(sql.updateBug, [platform, source, content, planDate, finishDate,
+                finishStatus, finishContent, bugId], function (err, result) {
+                if (err) {
+                    return connection.rollback(function() {
+                        throw err;
+                    });
+                }
+                connection.query(sql.deleteUB, [bugId], function (err, result) {
+                    if (err) {
+                        return connection.rollback(function() {
+                            throw err;
+                        });
+                    }
+
+                    var modifiersIds = param.modifiers;
+                    var sqlInsertUserBug = sql.insertUerBug;
+                    for (var i = 1; i < modifiersIds.length; i++) {
+                        sqlInsertUserBug += '(0,'+ modifiersIds[i] +',' + bugId + '),';
+                    }
+                    sqlInsertUserBug = sqlInsertUserBug.substring(0, sqlInsertUserBug.length - 1);
+                    connection.query(sqlInsertUserBug, [], function (err, result) {
+                        if (err) {
+                            return connection.rollback(function() {
+                                throw err;
+                            });
+                        }
+
+                        connection.commit(function (err) {
+                            var resultStr;
+                            if (err) {
+                                resultStr = {code : '0', msg: '更新失败'};
+                            }else {
+                                resultStr = {code : '1', msg: '更新成功'};
+                            }
+
+
+                            // 以json形式，把操作结果返回给前台页面
+                            jsonWrite(res, resultStr);
+                        });
+                    });
+                });
+            });
         });
     }
 }

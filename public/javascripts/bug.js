@@ -57,7 +57,8 @@ function showBugs() {
                         var inputs = tr.find('input');
                         //修改
                         inputs.eq(0).click(function (event) {
-                            alert('修改' + (index + 1));
+                            sessionStorage.setItem("bugId", item.bugId);
+                            self.location = '/bugs/modify';
                         });
                         //删除
                         inputs.eq(1).click(function (event) {

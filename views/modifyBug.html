@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>更新</title>
+        <script src="../javascripts/jquery-3.1.1.min.js"></script>
+        <script src="../javascripts/modifyBug.js"></script>
+    </head>
+    <body>
+        <label>平台</label>
+        <select id="platform">
+            <option value="web">web</option>
+            <option value="android">android</option>
+            <option value="ios">ios</option>
+        </select>
+        <label>来源</label>
+        <input type="text" id="source">
+        <label>变更内容</label>
+        <input type="text" id="content">
+        <label>修改人员</label>
+        <div id="modifyer"></div>
+        <label>预计完成时间</label>
+        <input type="text" id="plan_time">
+        <div id="finish_date_div" style="display: none">
+            <label>实际完成时间</label>
+            <input type="text" id="finish_time">
+        </div>
+        <label>完成情况</label>
+        <select id="finish_status">
+            <option value="0">未完成</option>
+            <option value="1">已完成</option>
+        </select>
+        <div id="unfinish_content_div">
+            <label>未完成情况说明</label>
+            <input type="text" id="unfinish_content">
+        </div>
+        <input type="button" value="更新" id="update">
+    </body>
+</html>
